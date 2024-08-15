@@ -16,15 +16,28 @@
  */
 
 apply plugin: 'com.android.library'
+apply plugin: 'maven-publish'
+
+publishing {
+    publications {
+        release(MavenPublication) {
+            afterEvaluate {
+                from components.release
+            }
+        }
+    }
+}
 
 android {
-    dexOptions {
-        javaMaxHeapSize "2g"
-    }
-    compileSdkVersion 29
+    namespace 'me.tatiyanupanwong.supasin.android.libraries.huawei.maps.utils'
+    compileSdk 34
     defaultConfig {
-        minSdkVersion 19
-        targetSdkVersion 29
+        minSdk 19
+    }
+    buildTypes {
+        release {
+
+        }
     }
     resourcePrefix 'hmu_'
     compileOptions {
@@ -38,6 +51,11 @@ android {
             returnDefaultValues = true
         }
     }
+    publishing {
+        singleVariant('release') {
+            withSourcesJar()
+        }
+    }
 }
 
 dependencies {
@@ -49,5 +67,3 @@ dependencies {
 }
 
 task instrumentTest(dependsOn: connectedCheck)
-
-apply from: 'publish.gradle'
